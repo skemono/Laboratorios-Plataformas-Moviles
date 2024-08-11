@@ -1,5 +1,6 @@
 package com.uvg.lab05
 
+import android.content.Context
 import android.graphics.drawable.Icon
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -56,6 +57,10 @@ import com.uvg.lab05.ui.theme.DarkPurple
 import com.uvg.lab05.ui.theme.PersianOrange
 import com.uvg.lab05.ui.theme.RedWood
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
+import androidx.compose.foundation.clickable
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,7 +95,8 @@ fun HandleLab05States(modifier: Modifier){
         restaurantPrice = "QQ",
         appLink = "https://play.google.com/store/apps/details?id=com.whatsapp",
         googleMapsCoords = "https://www.google.com/maps/dir//18+Avenida+A+0-63,+Cdad.+de+Guatemala+01004/@14.5922261,-90.5779737,12z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8589a2308cee0f53:0x14990c3c030032f4!2m2!1d-90.4955719!2d14.5922405?entry=ttu",
-        modifier = Modifier.background(color = RedWood)
+        modifier = Modifier.background(color = RedWood),
+        currentContext = context
     )
 }
 
@@ -109,6 +115,7 @@ fun Lab05(
 
     appLink : String,
     googleMapsCoords : String,
+    currentContext : Context
 ){
     Column(verticalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier
         .fillMaxWidth()
@@ -126,7 +133,7 @@ fun Lab05(
             Row (modifier = Modifier.padding(horizontal = 10.dp)){
                 Icon(
                     Icons.Rounded.Info,
-                    contentDescription = "xd"
+                    contentDescription = "Info"
                 )
                 Text(modifier = Modifier
                     .padding(horizontal = 10.dp),
@@ -136,9 +143,16 @@ fun Lab05(
 
             }
             Text(text = "Descargar", color = Citrus, modifier = Modifier
-                .padding(horizontal = 10.dp),
+                .padding(horizontal = 10.dp)
+                .clickable(enabled = true){
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        data =
+                            Uri.parse("https://play.google.com/store/apps/details?id=com.whatsapp")
+                    }
+                    currentContext.startActivity(intent)
+                },
                 fontSize = 10.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
         }
         Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier
@@ -180,7 +194,15 @@ fun Lab05(
                     )
                     Icon(
                         Icons.Rounded.LocationOn,
-                        contentDescription = "Location"
+                        contentDescription = "Location",
+                        Modifier.clickable {
+                            val latitude = 14.592235321822738
+                            val longitude = -90.49557452501665
+                            val uri = Uri.parse("geo:$latitude,$longitude?q=$latitude,$longitude")
+                            val intent = Intent(Intent.ACTION_VIEW, uri)
+                            intent.setPackage("com.google.android.apps.maps")
+                            currentContext.startActivity(intent)
+                        }
                     )
                 }
                 Text(text = restaurantAddress, style = TextStyle(
@@ -195,7 +217,9 @@ fun Lab05(
                 Row (horizontalArrangement = Arrangement.SpaceBetween ,modifier = Modifier
                     .fillMaxWidth()
                 ) {
-                    Button(onClick = { /*TODO*/ }, colors = ButtonDefaults.buttonColors(containerColor = Citrus), modifier = Modifier
+                    Button(onClick = {
+                        Toast.makeText(currentContext, fullName, Toast.LENGTH_LONG).show()
+                    }, colors = ButtonDefaults.buttonColors(containerColor = Citrus), modifier = Modifier
                         .fillMaxWidth(0.5f)
                     ) {
                        Text(text = "Iniciar", style = TextStyle(
@@ -203,7 +227,10 @@ fun Lab05(
                            fontWeight = FontWeight.Bold
                        ))
                     }
-                    Button(onClick = { /*TODO*/ }, colors = ButtonDefaults.buttonColors(containerColor = CafeNoir),modifier = Modifier
+                    Button(onClick = {
+                        val message = "$restaurantType\n$restaurantPrice"
+                        Toast.makeText(currentContext, message, Toast.LENGTH_LONG).show()
+                    }, colors = ButtonDefaults.buttonColors(containerColor = CafeNoir),modifier = Modifier
                         .fillMaxWidth()
                     ) {
                         Text(text = "Detalles", style = TextStyle(

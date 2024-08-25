@@ -233,7 +233,7 @@ fun Lab6(
         ) {
             Button(
                 onClick = { onReiniciar() },
-                modifier = Modifier.padding(0.dp, 20.dp),
+                modifier = Modifier.padding(bottom = 50.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = CherryBlossomPink)
             ) {
                 Text(text = "Reiniciar", color = White)

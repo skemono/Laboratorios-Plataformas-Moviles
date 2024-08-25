@@ -33,6 +33,11 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+private val NotificationColorScheme = lightColorScheme(
+    primary = DarkSpringGreen,
+    secondary = Asparagus,
+    tertiary = SpaceCadet
+)
 @Composable
 fun Lab07Theme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -51,7 +56,7 @@ fun Lab07Theme(
     }
 
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = NotificationColorScheme,
         typography = Typography,
         content = content
     )

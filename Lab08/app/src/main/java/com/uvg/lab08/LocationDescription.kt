@@ -1,5 +1,6 @@
 package com.uvg.lab08
 
+import LocationDb
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,14 +39,14 @@ import coil.request.ImageRequest
 import com.uvg.lab08.util.Character
 import com.uvg.lab08.util.CharacterDb
 
-private val MyDb = CharacterDb()
+private val MyDb = LocationDb()
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CharacterDescription(onBack: () -> Unit, id: Int){
+fun LocationDescription(onBack: () -> Unit, id: Int){
     Column (Modifier.fillMaxSize()){
         TopAppBar(
-            title = { Text(text = "Characters") },
+            title = { Text(text = "Locations") },
             navigationIcon = {
                 IconButton(onClick = onBack) {
                     Icon(Icons.Default.ArrowBack, contentDescription = "Back")
@@ -59,20 +60,9 @@ fun CharacterDescription(onBack: () -> Unit, id: Int){
         )
         Spacer(modifier = Modifier.height(20.dp))
         Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()) {
-            val charashe = MyDb.getCharacterById(id)
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(charashe.image)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = charashe.name,
-                contentScale = ContentScale.FillWidth,
-                modifier = Modifier
-                    .size(200.dp)
-                    .clip(CircleShape)
-            )
-            Text(text = charashe.name, style = TextStyle(fontSize = 25.sp, fontWeight = FontWeight.Bold)
-            , modifier = Modifier.padding(top = 10.dp)
+            val location = MyDb.getLocationById(id)
+            Text(text = location.name, style = TextStyle(fontSize = 25.sp, fontWeight = FontWeight.Bold)
+                , modifier = Modifier.padding(top = 10.dp)
             )
             Spacer(modifier = Modifier.height(40.dp))
 
@@ -83,24 +73,24 @@ fun CharacterDescription(onBack: () -> Unit, id: Int){
                 .padding(bottom = 10.dp)
             )
             {
-                Text(text = "Species:")
-                Text(text = charashe.species)
+                Text(text = "ID:")
+                Text(text = location.id.toString())
             }
             Row(horizontalArrangement = Arrangement.SpaceAround, modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 10.dp)
             )
             {
-                Text(text = "Status:")
-                Text(text = charashe.status)
+                Text(text = "Type:")
+                Text(text = location.type)
             }
             Row(horizontalArrangement = Arrangement.SpaceAround, modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 10.dp)
             )
             {
-                Text(text = "Gender:")
-                Text(text = charashe.gender)
+                Text(text = "Dimension:")
+                Text(text = location.dimension)
             }
         }
     }
